@@ -1,3 +1,17 @@
+- [x] Bubble Sort
+- [] Insertion Sort
+- [] Selection Sort
+- [] Merge Sort
+- [] Quick Sort
+
+
+this project is bootstrapped with react and it is based on visualizing the sorting algorithms.
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
