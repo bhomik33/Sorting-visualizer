@@ -1,15 +1,17 @@
 import React from 'react';
 import './SortingVisualizer.css';
-import {getBubbleSortAnimations, getInsertionSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations, getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container,Row,Col,Navbar, Nav, Button } from 'react-bootstrap';
 
-const NUMBER_OF_ARRAY_BARS = 150;
-const ANIMATION_SPEED_MS = 5;
+const NUMBER_OF_ARRAY_BARS = 20;
+const ANIMATION_SPEED_MS = 15;
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            array : [],
+            array : []
         };
     }
 
@@ -20,23 +22,10 @@ export default class SortingVisualizer extends React.Component {
     resetArray() {
         const array = [];
         for(let i= 0; i < NUMBER_OF_ARRAY_BARS; i++){
-            array.push(randomIntFromInterval(5,950));
+            array.push(randomIntFromInterval(5,700));
         }
         this.setState({array});
     }
-
-    testBubbleSort() { 
-        const javascriptSortedArray = this.state.array.slice().sort((a,b) => a - b);
-        const sortedArray = getBubbleSortAnimations(this.state.array);
-        for(let i = 0; i < this.state.array.length; i++) {
-            if (javascriptSortedArray.length !== sortedArray.length) console.log(false);
-            if (javascriptSortedArray[i] !== sortedArray[i]) console.log(false); 
-        }
-        console.log(true);
-    }
-
-
-
 
     bubbleSort() {
         const animations = getBubbleSortAnimations(this.state.array);
@@ -63,15 +52,10 @@ export default class SortingVisualizer extends React.Component {
                 }, i * ANIMATION_SPEED_MS)
             }
         }
-
-        
-
-
     }
 
     insertionSort() {
         const animations = getInsertionSortAnimations(this.state.array);
-        var color = false;
         var isColorChange = false;
         const arrayBars = document.getElementsByClassName('array-bar');
         for(let i = 0; i < animations.length; i++) {
@@ -100,41 +84,63 @@ export default class SortingVisualizer extends React.Component {
         }
     }
 
-    selectionSort() {
-
-    }
-
-
-    quickSort() {
-
-    }
 
     mergeSort() {
-
-    }
-
-
+        const animations = getMergeSortAnimations(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+          const arrayBars = document.getElementsByClassName('array-bar');
+          const isColorChange = i % 3 !== 2;
+          if (isColorChange) {
+            const [barOneIdx, barTwoIdx] = animations[i];
+            const barOneStyle = arrayBars[barOneIdx].style;
+            const barTwoStyle = arrayBars[barTwoIdx].style;
+            const color = i % 3 === 0 ? 'red' : 'turquoise';
+            setTimeout(() => {
+              barOneStyle.backgroundColor = color;
+              barTwoStyle.backgroundColor = color;
+            }, i * ANIMATION_SPEED_MS);
+          } else {
+            setTimeout(() => {
+              const [barOneIdx, newHeight] = animations[i];
+              const barOneStyle = arrayBars[barOneIdx].style;
+              barOneStyle.height = `${newHeight}px`;
+            }, i * ANIMATION_SPEED_MS);
+          }
+        }
+      }
 
     render() {
         const {array} = this.state;
-
         return (
-            <div className="array-container">
-            {array.map((value,idx) => (
-                <div className="array-bar" 
-                    key={idx}
-                    style={{height :`${value}px`}}>
-                </div>
-            ))}
-            <div className="button-container">
-            <button className="button" onClick={() => this.resetArray()}>Generate New Array</button>
-            <button className="button" onClick={() => this.bubbleSort()}>Bubble Sort</button>
-            <button className="button" onClick={() => this.insertionSort()}>Insertion Sort</button>
-            <button className="button" onClick={() => this.selectionSort()}>Selection Sort</button>
-            <button className="button" onClick={() => this.mergeSort()}>Merge Sort</button>
-            <button className="button" onClick={() => this.quickSort()}>Quick Sort</button>
+            <>
+            <Navbar bg="primary" variant="dark">
+                <Container>
+                <Navbar.Brand href="#home">Sorting Visualizer</Navbar.Brand>
+                <Nav className="me-auto">
+                <Button  onClick={() => this.resetArray()} variant="primary">Generate New Array</Button>{' '}
+                <Button  onClick={() => this.bubbleSort()} variant="primary">Bubble Sort</Button>{' '}
+                <Button  onClick={() => this.insertionSort()} variant="primary">Insertion Sort</Button>{' '}
+                <Button  onClick={() => this.mergeSort()} variant="primary">Merge Sort</Button>{' '}
+
+                </Nav>
+                </Container>
+            </Navbar>
+            <Container fluid>
+            <Row>
+            <Col> 
+                <div className="array-container">
+                {array.map((value,idx) => (
+                    <div className="array-bar" 
+                        key={idx}
+                        style={{height :`${value}px`}}>
+                    </div>
+                ))}    
             </div>
-        </div>
+                </Col>
+            </Row>
+            </Container>
+            </>
+           
 
         )
     }

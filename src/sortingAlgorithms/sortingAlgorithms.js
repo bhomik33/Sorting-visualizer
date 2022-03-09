@@ -27,6 +27,8 @@ export const getBubbleSortAnimations = (array) => {
 }
 
 
+// Insertion sort is a sorting algorithm that builds a final sorted array
+// by inserting one element at a time into the tentatively sorted list
 
 export const getInsertionSortAnimations = (array) => {
     const animations = [];
@@ -45,6 +47,90 @@ export const getInsertionSortAnimations = (array) => {
     return animations;
 }
 
+// Selection sort is a sorting algorithm in which smallest element selected and from the unsorted array
+// swapped with the leftmost element in the array
+
+// one sublist represents the sorted number
+// other list represents the unsorted number 
+export const getSelectionSortAnimations = (array) => {
+    const animations = [];
+    let currentIdx = 0;
+    while(currentIdx < array.length -1){
+       let smallestIdx = currentIdx;
+       for(let i = currentIdx + 1; i < array.length; i++){
+           animations.push([currentIdx, i]);
+           animations.push([currentIdx, i]);
+           if(array[smallestIdx] > array[i]) {
+               smallestIdx = i;
+            } 
+        }
+        swap(currentIdx, smallestIdx, array);
+        animations.push([currentIdx, smallestIdx]);
+        animations.push([array[currentIdx], array[smallestIdx]]);
+        currentIdx += 1;
+    }
+    return animations;
+}
+
+
+export const getMergeSortAnimations = (array) => {
+    const animations = [];
+    if (array.length <= 1) return array;
+    const auxiliaryArray = array.slice();
+    mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
+    return animations;
+  }
+  
+  function mergeSortHelper(
+    mainArray,
+    startIdx,
+    endIdx,
+    auxiliaryArray,
+    animations,
+  ) {
+    if (startIdx === endIdx) return;
+    const middleIdx = Math.floor((startIdx + endIdx) / 2);
+    mergeSortHelper(auxiliaryArray, startIdx, middleIdx, mainArray, animations);
+    mergeSortHelper(auxiliaryArray, middleIdx + 1, endIdx, mainArray, animations);
+    doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
+  }
+  
+  function doMerge(
+    mainArray,
+    startIdx,
+    middleIdx,
+    endIdx,
+    auxiliaryArray,
+    animations,
+  ) {
+    let k = startIdx;
+    let i = startIdx;
+    let j = middleIdx + 1;
+    while (i <= middleIdx && j <= endIdx) {
+      animations.push([i, j]);
+      animations.push([i, j]);
+      if (auxiliaryArray[i] <= auxiliaryArray[j]) {
+        animations.push([k, auxiliaryArray[i]]);
+        mainArray[k++] = auxiliaryArray[i++];
+      } else {
+        animations.push([k, auxiliaryArray[j]]);
+        mainArray[k++] = auxiliaryArray[j++];
+      }
+    }
+    while (i <= middleIdx) {
+      animations.push([i, i]);
+      animations.push([i, i]);
+
+      animations.push([k, auxiliaryArray[i]]);
+      mainArray[k++] = auxiliaryArray[i++];
+    }
+    while (j <= endIdx) {
+      animations.push([j, j]);
+      animations.push([j, j]);
+      animations.push([k, auxiliaryArray[j]]);
+      mainArray[k++] = auxiliaryArray[j++];
+    }
+  }
 
 
 function swap(i,j,array) {

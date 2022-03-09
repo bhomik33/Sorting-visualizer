@@ -1,9 +1,3 @@
-- [x] Bubble Sort
-- [] Insertion Sort
-- [] Selection Sort
-- [] Merge Sort
-- [] Quick Sort
-
 
 this project is bootstrapped with react and it is based on visualizing the sorting algorithms.
 
