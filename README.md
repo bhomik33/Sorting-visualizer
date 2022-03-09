@@ -1,6 +1,4 @@
-
-this project is bootstrapped with react and it is based on visualizing the sorting algorithms.
-
+Welcome to Sorting Visualizer!
 
 
 
