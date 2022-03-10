@@ -1,6 +1,7 @@
 Welcome to Sorting Visualizer!
 
-
+I built this sorting visulaizer for visualizing how different sorting algorithms work. In this sorting visulizer, you can visualize three sorting algorithms (Bubble Sort, Insertion Sort and Merge Sort). The link of the website is https://sorting-visualizer233.herokuapp.com/.
+Thanks to Clément Mihailescu for an amazing tutorial on youtube (https://youtu.be/pFXYym4Wbkc)
 
 
 
